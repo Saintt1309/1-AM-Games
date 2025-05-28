@@ -1,65 +1,96 @@
 using UnityEngine;
 
-public class playerMovement : MonoBehaviour
+public class Dashhh : MonoBehaviour
 {
-    private float horizontal;
-    private float speed = 8f;
-    private float jumpForce = 6.2f;
-    private bool isFacingRight = true;
+    [Header("Dash Settings")]
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private TrailRenderer dashTrail; // Optional for visual effect
 
-    private bool airJump;
-
+    [Header("References")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
+    private PlayerMovement playerMovement; // Reference to the player movement script
 
-    // Update is called once per frame
-    void Update()
+    // Dash state variables
+    private bool canDash = true;
+    private bool isDashing = false;
+    private float dashTimeLeft;
+    private float lastDashTime = -10f;
+    private Vector2 dashDirection;
+
+    private void Awake()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        // Auto-reference components if not assigned
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        playerMovement = GetComponent<PlayerMovement>();
+        
+        // If trail renderer is assigned, disable it initially
+        if (dashTrail != null) dashTrail.emitting = false;
+    }
 
-        if (Input.GetButtonDown("Jump") && isGrounded())
+    private void Update()
+    {
+        // Check for dash input
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && Time.time >= lastDashTime + dashCooldown)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            StartDash();
         }
 
-        if (Input.GetButtonDown("Jump") && rb.linearVelocity.y > 0)
+        // Update dash state
+        if (isDashing)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
-        }
-
-        if (isGrounded())
-        {
-            airJump = true;
-        }
-
-        Flip();
-
-        if (Input.GetButtonDown("Jump") && airJump)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            airJump = false;
+            dashTimeLeft -= Time.deltaTime;
+            
+            if (dashTimeLeft <= 0)
+            {
+                StopDash();
+            }
         }
     }
+
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
-
-    }
-
-    private bool isGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        
-    }
-    private void Flip()
-    {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0)
+        if (isDashing)
         {
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x = -1f;
-            transform.localScale = localScale;
+            // Apply dash velocity
+            rb.linearVelocity = dashDirection * dashSpeed;
         }
+    }
+
+    private void StartDash()
+    {
+        isDashing = true;
+        canDash = false;
+        dashTimeLeft = dashDuration;
+        lastDashTime = Time.time;
+
+        // Determine dash direction based on player's facing direction
+        float facingDirection = transform.localScale.x > 0 ? 1f : -1f;
+        dashDirection = new Vector2(facingDirection, 0f).normalized;
+
+        // Enable trail effect if available
+        if (dashTrail != null) dashTrail.emitting = true;
+
+        // Optional: Play dash sound effect
+        // AudioManager.Instance.PlaySound("DashSound");
+    }
+
+    private void StopDash()
+    {
+        isDashing = false;
+        canDash = true;
+        
+        // Reduce velocity after dash to prevent sliding
+        rb.linearVelocity = rb.linearVelocity * 0.5f;
+
+        // Disable trail effect
+        if (dashTrail != null) dashTrail.emitting = false;
+    }
+
+    // Public method to check if player is currently dashing (can be used by other scripts)
+    public bool IsDashing()
+    {
+        return isDashing;
     }
 }
