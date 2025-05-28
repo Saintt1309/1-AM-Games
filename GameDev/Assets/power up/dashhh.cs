@@ -65,9 +65,18 @@ public class Dashhh : MonoBehaviour
         dashTimeLeft = dashDuration;
         lastDashTime = Time.time;
 
-        // Determine dash direction based on player's facing direction
-        float facingDirection = transform.localScale.x > 0 ? 1f : -1f;
-        dashDirection = new Vector2(facingDirection, 0f).normalized;
+        // Use the PlayerMovement's facing direction
+        if (playerMovement != null)
+        {
+            float facingDirection = playerMovement.IsFacingRight() ? 1f : -1f;
+            dashDirection = new Vector2(facingDirection, 0f).normalized;
+        }
+        else
+        {
+            // Fallback if playerMovement reference is missing
+            float facingDirection = transform.localScale.x > 0 ? 1f : -1f;
+            dashDirection = new Vector2(facingDirection, 0f).normalized;
+        }
 
         // Enable trail effect if available
         if (dashTrail != null) dashTrail.emitting = true;

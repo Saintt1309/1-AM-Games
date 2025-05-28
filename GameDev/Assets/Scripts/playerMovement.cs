@@ -6,12 +6,17 @@ public class PlayerMovement : MonoBehaviour
     private float speed = 8f;
     private float jumpForce = 6.2f;
     private bool isFacingRight = true;
-
     private bool airJump;
+    private Dashhh dashComponent;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+
+    private void Awake()
+    {
+        dashComponent = GetComponent<Dashhh>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -41,25 +46,35 @@ public class PlayerMovement : MonoBehaviour
             airJump = false;
         }
     }
+
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
-
+        // Only apply normal movement if not dashing
+        if (dashComponent == null || !dashComponent.IsDashing())
+        {
+            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+        }
     }
 
     private bool isGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        
     }
+
     private void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0)
         {
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
-            localScale.x = -1f;
+            localScale.x *= -1f; // Changed to multiply by -1 instead of setting to -1
             transform.localScale = localScale;
         }
+    }
+
+    // Public method to get facing direction (used by Dashhh script)
+    public bool IsFacingRight()
+    {
+        return isFacingRight;
     }
 }
