@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
-    private float jumpForce = 6.2f;
+    [SerializeField]private float speed = 8f;
+    [SerializeField]private float jumpForce = 6.2f;
     private bool isFacingRight = true;
     private bool airJump;
     private Dashhh dashComponent;
