@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
+    
     private float horizontal;
     [SerializeField]private float speed = 8f;
     [SerializeField]private float jumpForce = 6.2f;
@@ -77,4 +79,5 @@ public class PlayerMovement : MonoBehaviour
     {
         return isFacingRight;
     }
+
 }
