@@ -51,16 +51,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private void Walk(Vector2 dir)
     {
-        // Prevent setting horizontal velocity if pressing into a wall
-        if ((dir.x > 0 && collisionCheck.onRightWall) || (dir.x < 0 && collisionCheck.onLeftWall))
-        {
-            // Do not overwrite horizontal velocity, let physics (gravity) act naturally
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        }
-        else
-        {
             rb.linearVelocity = new Vector2(dir.x * moveSpeed, rb.linearVelocity.y);
-        }
     }
 
     private void Jump(Vector2 dir)
