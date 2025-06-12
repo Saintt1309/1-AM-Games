@@ -9,9 +9,11 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float SlidingSpeed = 2f;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 12f;
+    [Space]
+    [Header("Better Jump Settings")]
+
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 12f;
 
     void Start()
     {
