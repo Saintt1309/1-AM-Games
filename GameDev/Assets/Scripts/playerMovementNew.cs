@@ -26,7 +26,6 @@ public class PlayerMovementNew : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
-
         Vector2 dir = new Vector2(moveX, moveY);
 
         Walk(dir);

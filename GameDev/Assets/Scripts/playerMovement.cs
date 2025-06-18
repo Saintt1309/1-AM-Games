@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Vector3 cameraOffset;
 
     private void Awake()
     {
@@ -47,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             airJump = false;
         }
+        UpdateCameraPosition();
     }
 
     private void FixedUpdate()
@@ -80,4 +83,11 @@ public class PlayerMovement : MonoBehaviour
         return isFacingRight;
     }
 
+    private void UpdateCameraPosition()
+    {
+        if (cameraTransform != null)
+        {
+            cameraTransform.position = transform.position + cameraOffset;
+        }
+    }
 }
