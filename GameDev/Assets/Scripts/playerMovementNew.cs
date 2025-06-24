@@ -4,6 +4,7 @@ public class PlayerMovementNew : MonoBehaviour
 {
     [SerializeField] private CollisionCheck collisionCheck;
     [SerializeField] private Rigidbody2D rb;
+    private Animator anim;
 
     [Space]
     [Header("Movement Settings")]
@@ -15,10 +16,14 @@ public class PlayerMovementNew : MonoBehaviour
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 12f;
 
+    private bool isWalking;
+
     void Start()
     {
         collisionCheck = GetComponent<CollisionCheck>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        isWalking = false;
     }
 
     void Update()
@@ -29,6 +34,8 @@ public class PlayerMovementNew : MonoBehaviour
         Vector2 dir = new Vector2(moveX, moveY);
 
         Walk(dir);
+
+        isWalking = dir.x != 0;
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -47,18 +54,24 @@ public class PlayerMovementNew : MonoBehaviour
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
-
+        updateAnim();
     }
 
     private void Walk(Vector2 dir)
     {
-            rb.linearVelocity = new Vector2(dir.x * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dir.x * moveSpeed, rb.linearVelocity.y);
+
     }
 
     private void Jump(Vector2 dir)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         rb.linearVelocity += dir * jumpForce;
+    }
+
+    void updateAnim()
+    {
+        anim.SetBool("Walking", isWalking);
     }
     
 }
