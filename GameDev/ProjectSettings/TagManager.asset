@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
   - 
-  - 
+  - Spikes
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 366930283
+    locked: 0
+  - name: Hazards
+    uniqueID: 2136426177
+    locked: 0
+  - name: Level
+    uniqueID: 1195078459
     locked: 0
   m_RenderingLayers:
   - Default
