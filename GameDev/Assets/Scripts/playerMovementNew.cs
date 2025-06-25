@@ -16,6 +16,10 @@ public class PlayerMovementNew : MonoBehaviour
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 12f;
 
+    [Space]
+    [Header("Facing Direction")]
+    public bool isFacingRight;
+
     private bool isWalking;
 
     void Start()
@@ -55,6 +59,8 @@ public class PlayerMovementNew : MonoBehaviour
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
         updateAnim();
+
+        TurnCheck();
     }
 
     private void Walk(Vector2 dir)
@@ -72,6 +78,37 @@ public class PlayerMovementNew : MonoBehaviour
     void updateAnim()
     {
         anim.SetBool("Walking", isWalking);
+    }
+
+    private void TurnCheck()
+{
+    float moveX = Input.GetAxis("Horizontal");
+
+    if (moveX > 0 && !isFacingRight)
+    {
+        turn();
+    }
+    else if (moveX < 0 && isFacingRight)
+    {
+        turn();
+    }
+}
+
+    private void turn()
+    {
+        if (isFacingRight)
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;
+        }
+        else
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;
+        }
+    
     }
     
 }
