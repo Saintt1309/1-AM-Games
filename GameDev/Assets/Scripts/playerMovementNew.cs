@@ -21,6 +21,8 @@ public class PlayerMovementNew : MonoBehaviour
     public bool isFacingRight;
 
     private bool isWalking;
+    private bool isJumping;
+
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class PlayerMovementNew : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         isWalking = false;
+        isJumping = false;
     }
 
     void Update()
@@ -46,6 +49,7 @@ public class PlayerMovementNew : MonoBehaviour
             if (collisionCheck.onGround)
             {
                 Jump(Vector2.up);
+                isJumping = true;
             }
         }
 
@@ -77,7 +81,8 @@ public class PlayerMovementNew : MonoBehaviour
 
     void updateAnim()
     {
-        anim.SetBool("Walking", isWalking);
+        anim.SetBool("walking", isWalking);
+        anim.SetBool("jump", isJumping);
     }
 
     private void TurnCheck()
