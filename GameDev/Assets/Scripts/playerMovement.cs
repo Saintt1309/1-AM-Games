@@ -8,8 +8,7 @@ using UnityEngine;
     [SerializeField]private float speed = 8f;
     [SerializeField]private float jumpForce = 6.2f;
     private bool isFacingRight = true;
-    private bool airJump;
-    private Dashhh dashComponent;
+    private bool airJump
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -17,10 +16,7 @@ using UnityEngine;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Vector3 cameraOffset;
 
-    private void Awake()
-    {
-        dashComponent = GetComponent<Dashhh>();
-    }
+
 
     // Update is called once per frame
     void Update()
