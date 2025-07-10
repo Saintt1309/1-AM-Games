@@ -22,6 +22,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private bool isWalking;
     private bool isJumping;
+    private bool isFalling;
 
 
     void Start()
@@ -43,6 +44,7 @@ public class PlayerMovementNew : MonoBehaviour
         Walk(dir);
 
         isWalking = dir.x != 0;
+        isFalling = rb.linearVelocity.y < 0;
 
         if (Input.GetButtonDown("Jump"))
         {
