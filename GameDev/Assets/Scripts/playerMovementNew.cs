@@ -20,9 +20,17 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Facing Direction")]
     public bool isFacingRight;
 
+    [Space]
+    [Header("Dash Settings")]
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+    private bool isDashing = false;
+    private float dashCooldownTimer = 0f;
+
     private bool isWalking;
     private bool isJumping;
-    private float isFalling;
+
 
     void Start()
     {
@@ -35,8 +43,16 @@ public class PlayerMovementNew : MonoBehaviour
 
     void Update()
     {
-        
-        Debug.Log("Is Falling: " + isFalling);
+        if (dashCooldownTimer > 0)
+            dashCooldownTimer -= Time.deltaTime;
+
+        if (!isDashing && Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0)
+        {
+            StartCoroutine(Dash());
+            return;
+        }
+
+        if (isDashing) return;
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
@@ -55,12 +71,6 @@ public class PlayerMovementNew : MonoBehaviour
                 isJumping = true;
             }
         }
-        else if (Input.GetButtonUp("Jump"))
-        {
-            isJumping = false;
-        }
-
-        isFalling = rb.linearVelocity.y;
 
         // Better Jumping physics
         if (rb.linearVelocity.y < 0)
@@ -92,7 +102,6 @@ public class PlayerMovementNew : MonoBehaviour
     {
         anim.SetBool("walking", isWalking);
         anim.SetBool("jump", isJumping);
-        anim.SetFloat("yVelocity", isFalling);
     }
 
     private void TurnCheck()
@@ -124,6 +133,19 @@ public class PlayerMovementNew : MonoBehaviour
             isFacingRight = !isFacingRight;
         }
     
+    }
+
+    private System.Collections.IEnumerator Dash()
+    {
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0;
+        rb.linearVelocity = new Vector2((isFacingRight ? 1 : -1) * dashSpeed, 0);
+        anim.SetTrigger("dash"); // Optional: set up a dash animation trigger
+        yield return new WaitForSeconds(dashDuration);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        dashCooldownTimer = dashCooldown;
     }
     
 }
