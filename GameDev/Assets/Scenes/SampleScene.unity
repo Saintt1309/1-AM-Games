@@ -1417,7 +1417,7 @@ GameObject:
   - component: {fileID: 2128969023}
   - component: {fileID: 2128969022}
   - component: {fileID: 2128969021}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Spikes TIlemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4550,7 +4550,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: e7f081a5c42440b46b0ce5f31d6bf153, type: 2}
+  m_Material: {fileID: 6200000, guid: 16b1301ab755e2e4fa22d55e8827b844, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

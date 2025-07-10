@@ -144,10 +144,10 @@ TextureImporter:
       name: dashAnimation_0
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 0
-        width: 17
-        height: 33
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,10 +166,10 @@ TextureImporter:
       name: dashAnimation_1
       rect:
         serializedVersion: 2
-        x: 59
+        x: 48
         y: 0
-        width: 22
-        height: 29
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -188,10 +188,10 @@ TextureImporter:
       name: dashAnimation_2
       rect:
         serializedVersion: 2
-        x: 104
+        x: 96
         y: 0
-        width: 29
-        height: 29
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,77 +206,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: dashAnimation_3
-      rect:
-        serializedVersion: 2
-        x: 151
-        y: 0
-        width: 30
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7925e4722107c2eb0800000000000000
-      internalID: -4743293084256808297
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dashAnimation_4
-      rect:
-        serializedVersion: 2
-        x: 199
-        y: 0
-        width: 33
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d1162b2d9e1c82e00800000000000000
-      internalID: 1020278525605863709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dashAnimation_5
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 0
-        width: 17
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5ff7b0c8fae79ec80800000000000000
-      internalID: -8292957946392117259
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 89111b44008e417449deb8b6398e52f4
     internalID: 0
     vertices: []
     indices: 
@@ -284,14 +218,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       dashAnimation_0: -7285908496165939877
       dashAnimation_1: -4882845028535788474
       dashAnimation_2: -733122231345916520
-      dashAnimation_3: -4743293084256808297
-      dashAnimation_4: 1020278525605863709
-      dashAnimation_5: -8292957946392117259
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
