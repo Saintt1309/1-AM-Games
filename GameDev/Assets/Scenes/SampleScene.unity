@@ -1381,6 +1381,9 @@ MonoBehaviour:
   fallMultiplier: 2.5
   lowJumpMultiplier: 12
   isFacingRight: 1
+  dashSpeed: 20
+  dashDuration: 0.2
+  dashCooldown: 1
 --- !u!95 &1963169911
 Animator:
   serializedVersion: 7
