@@ -30,6 +30,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private bool isWalking;
     private bool isJumping;
+    private float isFalling;
 
 
     void Start()
@@ -71,6 +72,12 @@ public class PlayerMovementNew : MonoBehaviour
                 isJumping = true;
             }
         }
+        else if (Input.GetButtonUp("Jump"))
+        {
+            isJumping = false;
+        }
+
+        isFalling = rb.linearVelocity.y;
 
         // Better Jumping physics
         if (rb.linearVelocity.y < 0)
@@ -102,6 +109,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         anim.SetBool("walking", isWalking);
         anim.SetBool("jump", isJumping);
+        anim.SetFloat("yVelocity", isFalling);
     }
 
     private void TurnCheck()
