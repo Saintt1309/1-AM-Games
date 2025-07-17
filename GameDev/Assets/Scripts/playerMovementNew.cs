@@ -28,6 +28,14 @@ public class PlayerMovementNew : MonoBehaviour
     private bool isDashing = false;
     private float dashCooldownTimer = 0f;
 
+    [Space]
+    [Header("Shrink Settings")]
+    [SerializeField] private Vector3 minShrinkScale = new Vector3(0.1f, 0.1f, 1f); // Minimum scale
+    [SerializeField] private float shrinkSpeed = 2f; // How fast to shrink/grow
+    private bool isShrinking = false;
+    private float shrinkCooldownTimer = 0f;
+    private Vector3 originalScale;
+
     private bool isWalking;
     private bool isJumping;
     private float isFalling;
@@ -40,6 +48,7 @@ public class PlayerMovementNew : MonoBehaviour
         anim = GetComponent<Animator>();
         isWalking = false;
         isJumping = false;
+        originalScale = transform.localScale;
     }
 
     void Update()
@@ -91,6 +100,21 @@ public class PlayerMovementNew : MonoBehaviour
         updateAnim();
 
         TurnCheck();
+
+        if (shrinkCooldownTimer > 0)
+            shrinkCooldownTimer -= Time.deltaTime;
+
+        // Shrink infinitely while holding Left Control
+        if (Input.GetKey(KeyCode.LeftControl) && shrinkCooldownTimer <= 0)
+        {
+            isShrinking = true;
+            transform.localScale = Vector3.MoveTowards(transform.localScale, minShrinkScale, shrinkSpeed * Time.deltaTime);
+        }
+        // Grow back when releasing Left Control
+        else if (isShrinking && !Input.GetKey(KeyCode.LeftControl))
+        {
+            StartCoroutine(GrowBack());
+        }
     }
 
     private void Walk(Vector2 dir)
@@ -154,6 +178,22 @@ public class PlayerMovementNew : MonoBehaviour
         rb.gravityScale = originalGravity;
         isDashing = false;
         dashCooldownTimer = dashCooldown;
+    }
+
+    private System.Collections.IEnumerator GrowBack()
+    {
+        isShrinking = false;
+        float elapsed = 0f;
+        Vector3 startScale = transform.localScale;
+        float growDuration = 0.5f;
+        while (elapsed < growDuration)
+        {
+            transform.localScale = Vector3.Lerp(startScale, originalScale, elapsed / growDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = originalScale;
+        shrinkCooldownTimer = shrinkCooldown * 2f; // Longer cooldown after growing back
     }
     
 }
