@@ -37,6 +37,15 @@ public class PlayerMovementNew : MonoBehaviour
     private float shrinkCooldownTimer = 0f;
     private Vector3 originalScale;
 
+    [Space]
+    [Header("Grow Settings")]
+    [SerializeField] private Vector3 growScale = new Vector3(2f, 2f, 1f);
+    [SerializeField] private float growDuration = 2f;
+    [SerializeField] private float growGravityScale = 0.5f;
+    [SerializeField] private float growCooldown = 3f;
+    private bool isGrowing = false;
+    private float growCooldownTimer = 0f;
+
     private bool isWalking;
     private bool isJumping;
     private float isFalling;
@@ -111,6 +120,20 @@ public class PlayerMovementNew : MonoBehaviour
             return;
         }
         if (isShrinking) return;
+
+        if (growCooldownTimer > 0)
+            growCooldownTimer -= Time.deltaTime;
+
+        if (!isGrowing && Input.GetKeyDown(KeyCode.LeftAlt) && growCooldownTimer <= 0)
+        {
+            StartCoroutine(GrowLarge());
+            return;
+        }
+        // Break the fall while large
+        if (isGrowing && Input.GetKeyDown(KeyCode.LeftAlt) && rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+        }
     }
 
     private void Walk(Vector2 dir)
@@ -202,6 +225,37 @@ public class PlayerMovementNew : MonoBehaviour
         transform.localScale = originalScale;
         isShrinking = false;
         shrinkCooldownTimer = shrinkCooldown;
+    }
+
+    private System.Collections.IEnumerator GrowLarge()
+    {
+        isGrowing = true;
+        float elapsed = 0f;
+        Vector3 startScale = transform.localScale;
+        float originalGravity = rb.gravityScale;
+        // Grow animation
+        while (elapsed < 0.3f)
+        {
+            transform.localScale = Vector3.Lerp(startScale, growScale, elapsed / 0.3f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = growScale;
+        rb.gravityScale = growGravityScale;
+        anim.SetTrigger("grow"); // Optional: set up a grow animation trigger
+        yield return new WaitForSeconds(growDuration);
+        // Shrink back animation
+        elapsed = 0f;
+        while (elapsed < 0.3f)
+        {
+            transform.localScale = Vector3.Lerp(growScale, originalScale, elapsed / 0.3f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = originalScale;
+        rb.gravityScale = originalGravity;
+        isGrowing = false;
+        growCooldownTimer = growCooldown;
     }
     
 }
