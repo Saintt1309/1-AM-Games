@@ -6,6 +6,8 @@ public class PlayerMovementNew : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     private Animator anim;
 
+    [SerializeField] private GameObject respawnPoint;
+
     [Space]
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 10f;
@@ -134,6 +136,20 @@ public class PlayerMovementNew : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         }
+
+        if (collisionCheck.isDead)
+        {
+            isWalking = false;
+            isJumping = false;
+            rb.linearVelocity = Vector2.zero; // Stop movement when dead
+        }
+        else
+        {
+            isWalking = dir.x != 0;
+            isJumping = rb.linearVelocity.y > 0;
+        }
+
+
     }
 
     private void Walk(Vector2 dir)
@@ -156,18 +172,18 @@ public class PlayerMovementNew : MonoBehaviour
     }
 
     private void TurnCheck()
-{
-    float moveX = Input.GetAxis("Horizontal");
+    {
+        float moveX = Input.GetAxis("Horizontal");
 
-    if (moveX > 0 && !isFacingRight)
-    {
-        turn();
+        if (moveX > 0 && !isFacingRight)
+        {
+            turn();
+        }
+        else if (moveX < 0 && isFacingRight)
+        {
+            turn();
+        }
     }
-    else if (moveX < 0 && isFacingRight)
-    {
-        turn();
-    }
-}
 
     private void turn()
     {
@@ -183,7 +199,7 @@ public class PlayerMovementNew : MonoBehaviour
             transform.rotation = Quaternion.Euler(rotator);
             isFacingRight = !isFacingRight;
         }
-    
+
     }
 
     private System.Collections.IEnumerator Dash()
@@ -257,5 +273,17 @@ public class PlayerMovementNew : MonoBehaviour
         isGrowing = false;
         growCooldownTimer = growCooldown;
     }
-    
+
+    public void respawn()
+    {
+        transform.position = respawnPoint.transform.position;
+        rb.linearVelocity = Vector2.zero;
+        collisionCheck.isDead = false;
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(respawnPoint.transform.position, 0.5f);
+    }
 }

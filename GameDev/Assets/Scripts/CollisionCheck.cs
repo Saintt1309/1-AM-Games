@@ -12,6 +12,7 @@ public class CollisionCheck : MonoBehaviour
     public bool onRightWall;
     public bool onLeftWall;
     public int wallSide;
+    public bool isDead = false;
 
     [Space]
 
@@ -22,17 +23,28 @@ public class CollisionCheck : MonoBehaviour
     private Color debugCollisionColor = Color.red;
 
     [Space]
+    [Header("Death Screen")]
+    public GameObject deathScreen;
+
+    [Space]
 
     [Header("Spike Collision")]
 
     public PhysicsMaterial2D spikeMaterial;
     public LayerMask spikeLayer;
-    public bool touchingSpike;
+
+    [Space]
+
+    [Header("Enemy Collision")]
+
+    public PhysicsMaterial2D enemyMaterial;
+    public LayerMask enemyLayer;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        deathScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,7 +58,14 @@ public class CollisionCheck : MonoBehaviour
 
         wallSide = onRightWall ? -1 : 1;
 
-        
+        if (isDead)
+        {
+            deathScreen.SetActive(true);
+        }
+        else
+        {
+            deathScreen.SetActive(false);
+        }
     }
 
 
@@ -70,11 +89,19 @@ public class CollisionCheck : MonoBehaviour
             // The & operator checks if any bits overlap with 'spikeLayer'.
             // If they do, it means the collided object is on a layer included in 'spikeLayer'.
             Debug.Log("Hit by spikes (Layer Check)!");
-            touchingSpike = true;
+            isDead = true;
+
+        }
+        else if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+        {
+            Debug.Log("Hit by enemy (Layer Check)!");
+            isDead = true;
+
         }
         else
         {
-            touchingSpike = false;
+            isDead = false;
         }
     }
+
 }
