@@ -69,7 +69,7 @@ public class PlayerMovementNew : MonoBehaviour
         if (dashCooldownTimer > 0)
             dashCooldownTimer -= Time.deltaTime;
 
-        if (!isDashing && Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0)
+        if (!isDashing && Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f)
         {
             StartCoroutine(Dash());
             return;
@@ -175,6 +175,8 @@ public class PlayerMovementNew : MonoBehaviour
         anim.SetBool("onGround", onGround);
     }
 
+    
+
     private void TurnCheck()
     {
         float moveX = Input.GetAxis("Horizontal");
@@ -207,17 +209,32 @@ public class PlayerMovementNew : MonoBehaviour
     }
 
     private System.Collections.IEnumerator Dash()
-    {
-        isDashing = true;
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0;
-        rb.linearVelocity = new Vector2((isFacingRight ? 1 : -1) * dashSpeed, 0);
-        anim.SetTrigger("dash"); // Optional: set up a dash animation trigger
-        yield return new WaitForSeconds(dashDuration);
-        rb.gravityScale = originalGravity;
-        isDashing = false;
-        dashCooldownTimer = dashCooldown;
-    }
+  
+{
+    isDashing = true;
+
+    // Store current gravity and disable it temporarily
+    float originalGravity = rb.gravityScale;
+    rb.gravityScale = 0;
+
+    // Set animator to dash state
+    anim.SetBool("dash", true);
+
+    // Apply dash force
+    rb.linearVelocity = new Vector2((isFacingRight ? 1 : -1) * dashSpeed, 0);
+
+    // Wait for dash to finish
+    yield return new WaitForSeconds(dashDuration);
+
+    // Reset gravity and dash state
+    rb.gravityScale = originalGravity;
+    anim.SetBool("dash", false);
+    isDashing = false;
+
+    // Set cooldown
+    dashCooldownTimer = dashCooldown;
+}
+
 
     private System.Collections.IEnumerator Shrink()
     {
