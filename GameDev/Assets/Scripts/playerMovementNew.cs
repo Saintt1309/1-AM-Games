@@ -51,6 +51,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool isWalking;
     private bool isJumping;
     private float isFalling;
+    private bool onGround;
 
 
     void Start()
@@ -99,6 +100,8 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
         isFalling = rb.linearVelocity.y;
+        Debug.Log("Vertical Velocity: " + isFalling);
+        onGround = collisionCheck.onGround;
 
         // Better Jumping physics
         if (rb.linearVelocity.y < 0)
@@ -169,6 +172,7 @@ public class PlayerMovementNew : MonoBehaviour
         anim.SetBool("walking", isWalking);
         anim.SetBool("jump", isJumping);
         anim.SetFloat("yVelocity", isFalling);
+        anim.SetBool("onGround", onGround);
     }
 
     private void TurnCheck()
