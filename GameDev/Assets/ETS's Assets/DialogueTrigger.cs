@@ -100,5 +100,6 @@ public class DialogueTrigger : MonoBehaviour
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         dialogueBox.SetActive(false);
         continuePrompt.SetActive(false);
+        Destroy(gameObject); // Remove trigger after use
     }
 }
