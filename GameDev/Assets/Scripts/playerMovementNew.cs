@@ -1,7 +1,9 @@
 using UnityEngine;
-
 public class PlayerMovementNew : MonoBehaviour
 {
+    private bool deathSoundPlayed = false;
+    [Header("Audio")]
+    [SerializeField] private AudioManager audioManager;
     [SerializeField] private CollisionCheck collisionCheck;
     [SerializeField] private Rigidbody2D rb;
     private Animator anim;
@@ -71,6 +73,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (!isDashing && Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f)
         {
+            if (audioManager != null) audioManager.PlayDashSound();
             StartCoroutine(Dash());
             return;
         }
@@ -92,6 +95,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 Jump(Vector2.up);
                 isJumping = true;
+                if (audioManager != null) audioManager.PlayJumpSound();
             }
         }
         else if (Input.GetButtonUp("Jump"))
@@ -101,7 +105,13 @@ public class PlayerMovementNew : MonoBehaviour
 
         isFalling = rb.linearVelocity.y;
         Debug.Log("Vertical Velocity: " + isFalling);
+        bool wasOnGround = onGround;
         onGround = collisionCheck.onGround;
+        // Play landing sound when touching ground after falling
+        if (onGround && !wasOnGround && Mathf.Abs(isFalling) > 0.1f && audioManager != null)
+        {
+            audioManager.PlayLandingSound();
+        }
 
         // Better Jumping physics
         if (rb.linearVelocity.y < 0)
@@ -145,11 +155,17 @@ public class PlayerMovementNew : MonoBehaviour
             isWalking = false;
             isJumping = false;
             rb.linearVelocity = Vector2.zero; // Stop movement when dead
+            if (!deathSoundPlayed && audioManager != null)
+            {
+                audioManager.PlayDeathSound();
+                deathSoundPlayed = true;
+            }
         }
         else
         {
             isWalking = dir.x != 0;
             isJumping = rb.linearVelocity.y > 0;
+            deathSoundPlayed = false;
         }
 
 
@@ -239,6 +255,7 @@ public class PlayerMovementNew : MonoBehaviour
     private System.Collections.IEnumerator Shrink()
     {
         isShrinking = true;
+        if (audioManager != null) audioManager.PlayShrinkSound();
         float elapsed = 0f;
         Vector3 startScale = transform.localScale;
         // Shrink animation
@@ -267,6 +284,7 @@ public class PlayerMovementNew : MonoBehaviour
     private System.Collections.IEnumerator GrowLarge()
     {
         isGrowing = true;
+        if (audioManager != null) audioManager.PlayGrowSound();
         float elapsed = 0f;
         Vector3 startScale = transform.localScale;
         float originalGravity = rb.gravityScale;
@@ -300,6 +318,8 @@ public class PlayerMovementNew : MonoBehaviour
         transform.position = respawnPoint.transform.position;
         rb.linearVelocity = Vector2.zero;
         collisionCheck.isDead = false;
+        deathSoundPlayed = false;
+        if (audioManager != null) audioManager.PlayRespawnSound();
     }
 
     public void OnDrawGizmos()
