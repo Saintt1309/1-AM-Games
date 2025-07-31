@@ -104,7 +104,6 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
         isFalling = rb.linearVelocity.y;
-        Debug.Log("Vertical Velocity: " + isFalling);
         bool wasOnGround = onGround;
         onGround = collisionCheck.onGround;
         // Play landing sound when touching ground after falling

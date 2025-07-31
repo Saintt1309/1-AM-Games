@@ -4,6 +4,10 @@ using System.Collections;
 
 public class SceneSwitcher : MonoBehaviour
 {
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     public void PlayGame()
     {
         SceneManager.LoadSceneAsync(1);
@@ -26,13 +30,14 @@ public class SceneSwitcher : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(2);
         Debug.Log("Scene Switches to \"Ending\"");
-        StartCoroutine(Wait(5));
-        SceneManager.LoadSceneAsync(0);
-        Debug.Log("Scene Switches back to \"Main Menu\"");
+        StartCoroutine(WaitandLoad(5f));
+        
     }
 
-    private IEnumerator Wait(float waitTime)
+    private IEnumerator WaitandLoad(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        SceneManager.LoadSceneAsync(0);
+        Debug.Log("Scene Switches back to \"Main Menu\"");
     }
 }

@@ -5,6 +5,8 @@ public class CherryController : MonoBehaviour
     public AudioClip pickUpSound;
     private AudioSource audioSource;
 
+  
+
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();

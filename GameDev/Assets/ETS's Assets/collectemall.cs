@@ -5,6 +5,7 @@ public class collectemall : MonoBehaviour
     private Collider2D col;
     private Renderer rend;
     private bool canBeCollected = false;
+    public SceneSwitcher sceneSwitcher;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class collectemall : MonoBehaviour
     void Update()
     {
         // Check if all cherries are gone
-        if (!canBeCollected && CherryController.cherryCount == 0)
+        if (!canBeCollected && CherryController.cherryCount > 0)
         {
             canBeCollected = true;
             if (col != null) col.enabled = true;
@@ -31,6 +32,11 @@ public class collectemall : MonoBehaviour
         if (canBeCollected && other.CompareTag("Player"))
         {
             Destroy(gameObject);
+            Debug.Log("Diamond collected!"); 
+            
+            sceneSwitcher.LoadEnding();
+            Debug.Log("Cherry collected, switching to ending scene.");  
+
         }
     }
 }
