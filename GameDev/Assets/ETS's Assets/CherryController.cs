@@ -1,12 +1,14 @@
 using UnityEngine;
 public class CherryController : MonoBehaviour
 {
+    public static int cherryCount = 0;
     public AudioClip pickUpSound;
     private AudioSource audioSource;
 
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
+        cherryCount++;
     }
 
     // Destroy the cherry when the player touches it
@@ -23,6 +25,7 @@ public class CherryController : MonoBehaviour
                 Destroy(tempAudio, pickUpSound.length);
             }
             Destroy(gameObject);
+            cherryCount--;
         }
     }
 
